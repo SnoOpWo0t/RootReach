@@ -17,6 +17,9 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
     description = models.TextField()
     image = models.ImageField(upload_to='uploads/products/')
+    #is_sale
+    is_sale = models.BooleanField(default=False)
+    sale_price = models.FloatField(default=0)
     def __str__(self):
         return self.name
 
