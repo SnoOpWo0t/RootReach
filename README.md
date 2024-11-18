@@ -1,8 +1,8 @@
-Installation ⚙️
-Clone the repository:
-git clone https://github.com/SnoOpWo0t/RootReach
-Navigate to the project directory:
-cd rootreach
+1. Installation ⚙️
+2. Clone the repository:
+3. git clone https://github.com/SnoOpWo0t/RootReach
+4. Navigate to the project directory:
+5. cd rootreach
 Install dependencies:
 pip install -r requirements.txt
 pip install Django
