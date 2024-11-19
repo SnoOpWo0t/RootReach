@@ -3,11 +3,11 @@
 3. git clone https://github.com/SnoOpWo0t/RootReach
 4. Navigate to the project directory:
 5. cd rootreach
-Install dependencies:
-pip install -r requirements.txt
-pip install Django
-Apply migrations:
-python manage.py migrate
-Run the development server:
-python manage.py runserver
-Access the website at http://localhost:8000 in your browser.
+6. Install dependencies:
+7. pip install -r requirements.txt
+8. pip install Django
+9. Apply migrations:
+10. python manage.py migrate
+11. Run the development server:
+12. python manage.py runserver
+13. Access the website at http://localhost:8000 in your browser.
