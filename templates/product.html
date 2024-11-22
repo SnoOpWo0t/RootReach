@@ -1,28 +1,93 @@
 {% extends 'base.html' %}
 {% block content %}
-            <!-- Header-->
-        <div class="container">
-        <div class="card mb-3" style="max-width: 540px;">
-  <div class="row g-0">
-    <div class="col-md-4">
-      <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-          <center>
-        <h5 class="card-title">{{ product.name }}</h5>
-        <p class="card-text">{{ product.description }}</p>
-              {# product price#}
-              {{ product.price }}Tk <br/>
-              
-              
-     <a href="{% url 'home' %}" class= "btn btn-secondary"> Home</a>
-      <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
-      </center>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Product Details Section -->
+<div class="container">
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p>{{ product.price }} Tk</p>
+                        <p>ID: {{ product.id }}</p>
+
+                        <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+                        <button type="button" class="btn btn-secondary add-cart" data-id="{{ product.id }}">
+                            Add To Cart
+                        </button>
+
+                        <br><br><br><br><br><br><br><br><br><br>
+                    </center>
+                </div>
+            </div>
         </div>
-    
+    </div>
+</div>
+
+<!-- JavaScript Section -->
+    <script>
+    $(document).on('click', '.add-cart', function (e) {
+        e.preventDefault();
+
+        const productId = $(this).data('id');
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart_add" %}',
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function (json) {
+                console.log("Cart Quantity:", json.qty); // Debugging line
+                const cartQuantityElement = document.getElementById("cart_quantity");
+                if (cartQuantityElement) {
+                    cartQuantityElement.textContent = json.qty;
+                }
+                alert('Product added to cart!');
+            },
+            error: function (xhr, errmsg, err) {
+                console.error(`Error: ${errmsg}`);
+                alert('Failed to add product to cart.');
+            }
+        });
+    });
+</script>
+
+{#<script>#}
+{#    $(document).ready(function () {#}
+{#        $(document).on('click', '.add-cart', function (e) {#}
+{#            e.preventDefault(); // Prevents the default action of the button/link#}
+{##}
+{#            const productId = $(this).data('id'); // Get the product ID from the button's data attribute#}
+{##}
+{#            $.ajax({#}
+{#                type: 'POST',#}
+{#                url: '{% url "cart_add" %}', // URL defined in Django URL patterns#}
+{#                data: {#}
+{#                    product_id: productId, // Send the product ID#}
+{#                    csrfmiddlewaretoken: '{{ csrf_token }}', // CSRF token for POST requests#}
+{#                    action: 'post'#}
+{#                },#}
+{#                success: function (json) {#}
+{#                    // Update cart quantity in the UI#}
+{#                    const cartQuantityElement = document.getElementById("cart_quantity");#}
+{#                    if (cartQuantityElement) {#}
+{#                        cartQuantityElement.textContent = json.qty;#}
+{#                    }#}
+{#                    alert('Product added to cart successfully!');#}
+{#                },#}
+{#                error: function (xhr, errmsg, err) {#}
+{#                    console.error(`Error: ${errmsg}`); // Logs errors for debugging#}
+{#                    alert('Failed to add product to cart. Please try again.');#}
+{#                }#}
+{#            });#}
+{#        });#}
+{#    });#}
+{#</script>#}
 {% endblock %}
