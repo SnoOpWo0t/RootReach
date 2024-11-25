@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 <!-- Product Details Section -->
-<div class="container">
+<center>
+    <br/>
+    <div class="container">
     <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
             <div class="col-md-4">
@@ -14,13 +16,30 @@
                         <p class="card-text">{{ product.description }}</p>
                         <p>{{ product.price }} Tk</p>
                         <p>ID: {{ product.id }}</p>
+                         <br/>
+                        <div class="row justify-content-center">
+                            <div class="col-md2">Quantity :
+                             <div class="col-md2"> </div>
+                             <select class="form-select form-select-sm"  id="qty_cart" >
+{#                              <option selected>Open this select menu</option>#}
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                                 <option value="4">4</option>
+                                 <option value="5">5</option>
+                                </select>
+                                
+                            </div>
+                                
+                        </div>
+                        <br/>
 
                         <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
                         <button type="button" class="btn btn-secondary add-cart" data-id="{{ product.id }}">
                             Add To Cart
                         </button>
 
-                        <br><br><br><br><br><br><br><br><br><br>
+                        <br><br><br>
                     </center>
                 </div>
             </div>
@@ -40,6 +59,7 @@
             url: '{% url "cart_add" %}',
             data: {
                 product_id: productId,
+                product_qty:$('#qty_cart option:selected').text(),
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 action: 'post'
             },
@@ -91,3 +111,4 @@
 {#    });#}
 {#</script>#}
 {% endblock %}
+</center>

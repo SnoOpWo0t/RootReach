@@ -1,18 +1,46 @@
 {% extends 'base.html' %}
-{% load static %}]
+{% load static %}
 {% block content %}
-        <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Shopping Cart</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">View Your Cart</p>
+<!-- Header -->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Shopping Cart</h1>
+            <p class="lead fw-normal text-white-50 mb-0">View Your Cart</p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <center>
+        <br/><br/><br/><br/><br/>
+        {% if cart_products %}
+            {% for product in cart_products %}
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <center>
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <p class="card-text">{{ product.description }}</p>
+                                    <p>{{ product.price }} Tk</p>
+                                    <p>ID: {{ product.id }}</p>
+                                   
+                                    <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+                                    <br><br><br>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </header>
-       
-                
-                    
-                 
-       
+            {% endfor %}
+        {% else %}
+            <h1>The cart is empty</h1>
+              <br/> <br/> <br/>
+        {% endif %}
+    </center>
+</div>
 {% endblock %}

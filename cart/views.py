@@ -6,10 +6,10 @@ from products.models import Product
 
 # Cart summary view
 def cart_summary(request):
-    """
-    Render the cart summary page.
-    """
-    return render(request, "cart_summary.html", {})
+    """ Render the cart summary page."""
+    cart = Cart(request)
+    cart_products = cart.get_prods
+    return render(request, "cart_summary.html", { "cart_products": cart_products})
 
 
 # Add to cart view
@@ -24,28 +24,6 @@ def cart_add(request):
         response = JsonResponse({'qty': cart_quantity})
         return response
 
-
-# def cart_add(request):
-#     """
-#     Handle adding a product to the cart via AJAX POST request.
-#     """
-#     if request.method == 'POST' and request.POST.get('action') == 'post':
-#         cart = Cart(request)
-#         product_id = request.POST.get('product_id')
-#
-#         try:
-#             product_id = int(product_id)  # Ensure product_id is an integer
-#             product = get_object_or_404(Product, id=product_id)
-#             cart.add(product)
-#
-#             # Get the total quantity in the cart
-#             cart_quantity = len(cart.cart)
-#
-#             # Return success response
-#             return JsonResponse({'qty': cart_quantity})
-#         except (ValueError, Product.DoesNotExist):
-#             return JsonResponse({'error': 'Invalid product ID'}, status=400)
-#     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 # Delete from cart view
@@ -94,3 +72,27 @@ def cart_update(request):
         except (ValueError, KeyError) as e:
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+# def cart_add(request):
+#     """
+#     Handle adding a product to the cart via AJAX POST request.
+#     """
+#     if request.method == 'POST' and request.POST.get('action') == 'post':
+#         cart = Cart(request)
+#         product_id = request.POST.get('product_id')
+#
+#         try:
+#             product_id = int(product_id)  # Ensure product_id is an integer
+#             product = get_object_or_404(Product, id=product_id)
+#             cart.add(product)
+#
+#             # Get the total quantity in the cart
+#             cart_quantity = len(cart.cart)
+#
+#             # Return success response
+#             return JsonResponse({'qty': cart_quantity})
+#         except (ValueError, Product.DoesNotExist):
+#             return JsonResponse({'error': 'Invalid product ID'}, status=400)
+#     return JsonResponse({'error': 'Invalid request'}, status=400)

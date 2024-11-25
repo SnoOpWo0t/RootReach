@@ -1,3 +1,6 @@
+
+from products.models import Product
+
 class Cart:
     def __init__(self, request):
         self.session = request.session
@@ -15,9 +18,7 @@ class Cart:
         self.save()
 
     def __len__(self):
-        """
-        Return the total number of items in the cart.
-        """
+        """ Return the total number of items in the cart."""
         return sum(item['quantity'] for item in self.cart.values())
 
     def save(self):
@@ -25,3 +26,9 @@ class Cart:
         Mark the session as modified to ensure it is saved.
         """
         self.session.modified = True
+    def get_prods(self):
+        #get ids from cart
+        product_ids = self.cart.keys()
+        #use id to look up products in database
+        products = Product.objects.filter(id__in=product_ids) #id te 2ta underscore lagbe ekta dile file error
+        return products
