@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from . import views
+from django.urls import path
+from . import views
 urlpatterns = [
+    path('category/<str:category_summary>/', views.category_summary, name='category_summary'),
 
 ]

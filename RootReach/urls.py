@@ -27,12 +27,13 @@ urlpatterns = [
 
     path('login/', views.login_user, name='login'),
     path('logout/', views.logout_user, name='logout'),
-    path('register/', views.register_user, name='register'),
+    path('register/', views.register_user, name='register'), #new user
         #product page below
     path('product_page/<int:pk>', views.product_page, name='product_page'),
     path('category/<str:foo>', views.category, name='category'),
     path('cart/',include('cart.urls')),
-
+    path('category_summary/',views.category_summary, name='category_summary'),
+path('update/', views.update_user, name='update_user'), #update user
 
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

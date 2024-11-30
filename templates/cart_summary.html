@@ -13,34 +13,138 @@
 
 <div class="container">
     <center>
-        <br/><br/><br/><br/><br/>
-        {% if cart_products %}
-            {% for product in cart_products %}
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <center>
-                                    <h5 class="card-title">{{ product.name }}</h5>
-                                    <p class="card-text">{{ product.description }}</p>
-                                    <p>{{ product.price }} Tk</p>
-                                    <p>ID: {{ product.id }}</p>
-                                   
-                                    <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
-                                    <br><br><br>
-                                </center>
+        <div class="mt-5">
+            {% if cart_products %}
+                {% for product in cart_products %}
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <center>
+                                        <h5 class="card-title">{{ product.name }}</h5>
+                                        <p class="card-text">{{ product.description }}</p>
+                                        <p>{{ product.price }} Tk</p>
+                                        <p>ID: {{ product.id }}</p>
+
+                                        <button type="button" data-index="{{ product.id }}" class="btn btn-secondary update-cart">
+                                            Update Cart
+                                        </button>
+                                         <button type="button" data-index="{{ product.id }}" class="btn btn-danger delete-product">
+                                            Delete Cart
+                                        </button>
+ {#  checkout insted of HOME#}
+                                        <a href="{% url 'home' %}" class="btn btn-secondary">Checkout</a>
+                                        
+                                    </center>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <h1>The cart is empty</h1>
-              <br/> <br/> <br/>
-        {% endif %}
+                {% endfor %}
+            {% else %}
+                <h1 class="mt-5">The cart is empty</h1>
+            {% endif %}
+        </div>
     </center>
 </div>
+
+<script>
+    // JavaScript for handling "Update Cart"
+    $(document).on('click', '.update-cart', function (e) {
+        e.preventDefault();
+        const productId = $(this).data('index'); // Fetch product ID from the button's data attribute
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart_update" %}', // URL for updating the cart
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}', // CSRF token for security
+                action: 'update'
+            },
+            success: function (response) {
+                alert('Cart updated successfully!');
+                location.reload(); // Reload the page to reflect updated cart
+            },
+            error: function (xhr, errmsg, err) {
+                console.error(`Error updating cart: ${errmsg}`);
+            }
+        });
+    });
+        // JavaScript for handling "Update Cart"
+    $(document).on('click', '.update-cart', function (e) {
+        e.preventDefault();
+        const productId = $(this).data('index'); // Fetch product ID from the button's data attribute
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart_update" %}', // URL for updating the cart
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}', // CSRF token for security
+                action: 'update'
+            },
+            success: function (response) {
+                alert('Cart updated successfully!');
+                location.reload(); // Reload the page to reflect updated cart
+            },
+            error: function (xhr, errmsg, err) {
+                console.error(`Error updating cart: ${errmsg}`);
+            }
+        });
+    });
+
+    {#// JavaScript for handling "Delete Product"#}
+    // JavaScript for handling "Delete Product"
+$(document).on('click', '.delete-product', function (e) {
+    e.preventDefault();
+    const productId = $(this).data('index'); // Fetch product ID from the button's data attribute
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url "cart_delete" %}', // URL for deleting the product
+        data: {
+            product_id: productId,
+            csrfmiddlewaretoken: '{{ csrf_token }}', // CSRF token for security
+            action: 'post' // Ensure the action matches the backend
+        },
+        success: function (response) {
+            if (response.success) {
+                alert('Product deleted successfully!');
+                location.reload(); // Reload the page to reflect updated cart
+            } else {
+                alert('Failed to delete the product.');
+            }
+        },
+        error: function (xhr, errmsg, err) {
+            console.error(`Error deleting product: ${errmsg}`);
+        }
+    });
+});
+
+    {#$(document).on('click', '.delete-product', function (e) {#}
+    {#    e.preventDefault();#}
+    {#    const productId = $(this).data('index'); // Fetch product ID from the button's data attribute#}
+    {##}
+    {#    $.ajax({#}
+    {#        type: 'POST',#}
+    {#        url: '{% url "cart_delete" %}', // URL for deleting the product#}
+    {#        data: {#}
+    {#            product_id: $(this).data('index'),#}
+    {#            csrfmiddlewaretoken: '{{ csrf_token }}', // CSRF token for security#}
+    {#            action: 'delete'#}
+    {#        },#}
+    {#        success: function (jsosn) {#}
+    {#            alert('Product deleted successfully!');#}
+    {#            location.reload(); // Reload the page to reflect updated cart#}
+    {#        },#}
+    {#        error: function (xhr, errmsg, err) {#}
+    {#            console.error(`Error deleting product: ${errmsg}`);#}
+    {#        }#}
+    {#    });#}
+    {#});#}
+</script>
 {% endblock %}

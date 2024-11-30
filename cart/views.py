@@ -1,3 +1,6 @@
+from itertools import product
+
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .cart import Cart
@@ -13,6 +16,7 @@ def cart_summary(request):
 
 
 # Add to cart view
+@login_required
 def cart_add(request):
     cart = Cart(request)
     if request.POST.get('action') == 'post':
@@ -28,25 +32,15 @@ def cart_add(request):
 
 # Delete from cart view
 def cart_delete(request):
-    """
-    Handle removing a product from the cart.
-    """
-    if request.method == 'POST' and request.POST.get('action') == 'delete':
-        cart = Cart(request)
-        product_id = request.POST.get('product_id')
+    cart = Cart(request)
+    if request.POST.get('action') == 'post':
+        product_id = int(request.POST.get('product_id'))
+        cart.delete(product=product_id)
+        return JsonResponse({'success': True, 'product_id': product_id})  # Return success
+    return JsonResponse({'success': False, 'message': 'Invalid action!'})
 
-        try:
-            product_id = str(product_id)  # Ensure the ID is a string to match cart keys
-            cart.delete(product_id)
 
-            # Get the updated total quantity in the cart
-            cart_quantity = len(cart.cart)
 
-            # Return success response
-            return JsonResponse({'qty': cart_quantity})
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
-    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 # Update cart view
