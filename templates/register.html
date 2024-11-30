@@ -1,35 +1,65 @@
-{% extends 'base.html' %}
-{% block content %}
-    <!-- Header-->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Register</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Register for  Your Account...</p>
-            </div>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-6">
-                <!-- Login Form -->
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Enter Your Information</h5>
-    {#       login type#}
-                        <form method="post" action="{% url 'register' %}">
-                            {% csrf_token %}
-                           {{ form.as_p }}
-                            <br/> <br/>
-                            <button type="submit" class="btn btn-secondary"> Register</button>
-                        </form>
-                        <div class="text-center mt-3">
-                            <a href="#">Forgot your password?</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
+
+
+
+{#{% extends 'base.html' %}#}
+{#{% block content %}#}
+{#<!-- Header -->#}
+{#<header class="bg-dark py-5">#}
+{#    <div class="container px-4 px-lg-5 my-5">#}
+{#        <div class="text-center text-white">#}
+{#            <h1 class="display-4 fw-bolder">Register</h1>#}
+{#            <p class="lead fw-normal text-white-50 mb-0">Create your account</p>#}
+{#        </div>#}
+{#    </div>#}
+{#</header>#}
+{##}
+{#<div class="container">#}
+{#    <div class="row justify-content-center mt-4">#}
+{#        <div class="col-md-6">#}
+{#            <!-- Registration Form -->#}
+{#            <div class="card shadow-sm">#}
+{#                <div class="card-body">#}
+{#                    <h5 class="card-title text-center">Enter Your Information</h5>#}
+{#                    #}
+{#                    <!-- Display error/success messages -->#}
+{#                    {% if messages %}#}
+{#                        <div class="alert alert-info">#}
+{#                            {% for message in messages %}#}
+{#                                <p>{{ message }}</p>#}
+{#                            {% endfor %}#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#form#}
+{#    #}
+{#                <form method="post" action="{% url 'register' %}">#}
+{#    {% csrf_token %}#}
+{#    {{ form.as_p }}#}
+{#    {% for field in form %}#}
+{#        {% for error in field.errors %}#}
+{#            <p class="text-danger">{{ error }}</p>#}
+{#        {% endfor %}#}
+{#    {% endfor %}#}
+{#    {% for error in form.non_field_errors %}#}
+{#        <p class="text-danger">{{ error }}</p>#}
+{#    {% endfor %}#}
+{#    <div class="text-center mt-3">#}
+{#        <button type="submit" class="btn btn-secondary">Register</button>#}
+{#    </div>#}
+{#</form>#}
+{#  end form#}
+{##}
+{#                #}
+{#                #}
+{#                #}
+{#                    <div class="text-center mt-3">#}
+{#                        <a href="{% url 'login' %}">Already have an account? Log in</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{#{% endblock %}#}
+{##}
+{##}
