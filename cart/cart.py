@@ -32,3 +32,6 @@ class Cart:
         #use id to look up products in database
         products = Product.objects.filter(id__in=product_ids) #id te 2ta underscore lagbe ekta dile file error
         return products
+
+
+
