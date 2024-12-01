@@ -30,10 +30,10 @@ urlpatterns = [
     path('register/', views.register_user, name='register'), #new user
         #product page below
     path('product_page/<int:pk>', views.product_page, name='product_page'),
-    path('category/<str:foo>', views.category, name='category'),
-    path('cart/',include('cart.urls')),
+    path('category/<str:foo>/', views.category, name='category'),
     path('category_summary/',views.category_summary, name='category_summary'),
+    path('cart/',include('cart.urls')),
+
 path('update/', views.update_user, name='update_user'), #update user
-
-
+                  path('search/', views.search, name='search'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

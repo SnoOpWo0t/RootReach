@@ -2,7 +2,7 @@ from django.db import models
 import datetime
 
 from unicodedata import category
-
+# from django.contrib.auth.models import User
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=50)

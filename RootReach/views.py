@@ -10,6 +10,8 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm,UpdateUserForm
 from django import forms
 
+def search(request):
+    return render(request, 'search.html', {})
 def home(request):
     products = Product.objects.all()
     return render(request, 'home.html',{'products':products})
