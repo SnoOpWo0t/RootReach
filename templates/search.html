@@ -10,16 +10,21 @@
                 </div>
             </div>
         </header>
-
+<center>
  <div class="card">
   <div class="card-header">
     Featured
   </div>
   <div class="card-body">
-    <h5 class="card-title">Special title treatment</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+   <form method="POST" action="{% url 'search' %}">
+       {% csrf_token %}
+       <div class="mb-3">
+  
+  <input type="text" class="form-control" placeholder="search for products" name="Searched">
+</div>
+<button type="submit" class="btn btn secondary">Search Product</button>
+   </form>
   </div>
 </div>
-    
+    </center>
 {% endblock %}
