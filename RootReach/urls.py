@@ -35,6 +35,5 @@ urlpatterns = [
     path('cart/',include('cart.urls')),
 
 path('update/', views.update_user, name='update_user'), #update user
-
-
+                  path('search/', views.search, name='search'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
