@@ -66,8 +66,8 @@
                             <h5 class="fw-bolder">{{ product.name }}</h5>
                             {% if product.is_sale %}
                                 <p>
-                                    <strike style="color: red">${{ product.price }}</strike>
-                                    <span class="text-success fw-bold">${{ product.sale_price }}</span>
+                                    <strike style="color: red">{{ product.price }}Tk</strike>
+                                    <span class="text-success fw-bold">{{ product.sale_price }}Tk</span>
                                 </p>
                             {% else %}
                                 <p>${{ product.price }}</p>
@@ -76,7 +76,7 @@
                         </div>
                         <!-- Product Actions -->
                         <div class="card-footer bg-transparent border-0 text-center">
-                           <button type="button" class="btn btn-secondary id= add-cart" data-id="{{ product.id }}">Add To Cart </button>
+                            <button type="button" class="btn btn-secondary id= add-cart" data-id="{{ product.id }}">Add To Cart </button></div>
 
 <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product_page' product.id  %}">View Product</a></div>
                         </div>
