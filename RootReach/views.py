@@ -10,8 +10,15 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm,UpdateUserForm
 from django import forms
 
+
 def search(request):
+    if request.method == "POST":
+        searched = request.POST.get('searched', '')  # Retrieve the searched term
+        return render(request, 'search.html', {'searched': searched})
     return render(request, 'search.html', {})
+
+
+
 def home(request):
     products = Product.objects.all()
     return render(request, 'home.html',{'products':products})
