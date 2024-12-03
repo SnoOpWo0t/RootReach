@@ -13,7 +13,11 @@ from django import forms
 
 def search(request):
     if request.method == "POST":
-        searched = request.POST.get('searched', '')  # Retrieve the searched term
+        searched = request.POST.get('searched', '')
+        #now conect to db
+        searched =Product.objects.filter(name__icontains=searched) #show name product
+        if not searched:
+            messages.success(request, 'Nothing to Search')
         return render(request, 'search.html', {'searched': searched})
     return render(request, 'search.html', {})
 

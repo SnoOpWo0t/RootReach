@@ -19,11 +19,11 @@
             <form method="POST" action="{% url 'search' %}">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        placeholder="Search for products" 
-                        name="searched" 
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search for products"
+                        name="searched"
                         required
                     />
                 </div>
@@ -35,6 +35,10 @@
     <br /><br />
 
     {% if searched %}
+
+        {% for product in searched %}
+             {{product}}<BR/>
+        {% endfor %}
     <div class="alert alert-success" role="alert">
         You searched for: <strong>{{ searched }}</strong>
     </div>
@@ -45,4 +49,4 @@
 
 
 
-{#__________-----#}
+
