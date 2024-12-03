@@ -10,16 +10,27 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm,UpdateUserForm
 from django import forms
 
+from django.shortcuts import render
 
 def search(request):
-    if request.method == "POST":
-        searched = request.POST.get('searched', '')
-        #now conect to db
-        searched =Product.objects.filter(name__icontains=searched) #show name product
-        if not searched:
-            messages.success(request, 'Nothing to Search')
-        return render(request, 'search.html', {'searched': searched})
+    if request.method == 'POST':
+        search_query = request.POST.get('q', '')
+        searched = Product.objects.filter(name__icontains=search_query)  # Adjust filters as needed
+        return render(request, 'search.html', {
+            'searched': searched,
+            'search_query': search_query,
+        })
     return render(request, 'search.html', {})
+
+# def search(request):
+#     if request.method == "POST":
+#         searched = request.POST.get('searched', '')
+#         #now conect to db
+#         searched =Product.objects.filter(name__icontains=searched) #show name product
+#         if not searched:
+#             messages.success(request, 'Nothing to Search')
+#         return render(request, 'search.html', {'searched': searched})
+#     return render(request, 'search.html', {})
 
 
 

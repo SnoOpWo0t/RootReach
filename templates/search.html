@@ -1,52 +1,94 @@
 {% extends 'base.html' %}
+
+{% block title %}Search Products | Excession E-Commerce{% endblock title %}
+
 {% block content %}
 <!-- Header -->
 <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
             <h1 class="display-4 fw-bolder">Search Products</h1>
-            <p class="lead fw-normal text-white-50 mb-0">Find what you are looking for...</p>
+            <p class="lead fw-normal text-white-50 mb-0">Find what you're looking for...</p>
         </div>
     </div>
 </header>
 
-<center>
-    <div class="card my-5">
-        <div class="card-header">
-            Featured
-        </div>
-        <div class="card-body">
-            <form method="POST" action="{% url 'search' %}">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Search for products"
-                        name="searched"
-                        required
-                    />
+<!-- Search Form -->
+<div class="container mt-5">
+    <div class="row row-cols-1 justify-content-center">
+        <div class="col-10">
+            <div class="card mt-5 text-center">
+                <div class="card-header">Search Products</div>
+                <div class="card-body">
+                    <h5 class="card-title">I'm looking for...</h5>
+                    <form action="{% url 'search' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Search for products..."
+                                name="q"
+                                required
+                            />
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Search</button>
+                    </form>
                 </div>
-                <button type="submit" class="btn btn-secondary">Search Product</button>
-            </form>
+            </div>
         </div>
     </div>
+</div>
 
-    <br /><br />
-
+<!-- Search Results -->
+<div class="container mt-5">
     {% if searched %}
+        <div class="alert alert-success" role="alert">
+            You searched for: <strong>{{ search_query }}</strong>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+            {% for product in searched %}
+                <div class="col">
+                    <div class="card h-100">
+                        {% if product.is_sale %}
+                            <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+                                Sale
+                            </div>
+                        {% endif %}
+                        <!-- Product Image -->
+                        <img
+                            src="{{ product.image.url }}"
+                            class="card-img-top"
+                            alt="{{ product.name }}"
+                        />
+                        <!-- Product Details -->
+                        <div class="card-body text-center">
+                            <h5 class="fw-bolder">{{ product.name }}</h5>
+                            {% if product.is_sale %}
+                                <p>
+                                    <strike style="color: red">${{ product.price }}</strike>
+                                    <span class="text-success fw-bold">${{ product.sale_price }}</span>
+                                </p>
+                            {% else %}
+                                <p>${{ product.price }}</p>
+                            {% endif %}
+                            <p class="text-muted">{{ product.category }}</p>
+                        </div>
+                        <!-- Product Actions -->
+                        <div class="card-footer bg-transparent border-0 text-center">
+                           <button type="button" class="btn btn-secondary id= add-cart" data-id="{{ product.id }}">Add To Cart </button>
 
-        {% for product in searched %}
-             {{product}}<BR/>
-        {% endfor %}
-    <div class="alert alert-success" role="alert">
-        You searched for: <strong>{{ searched }}</strong>
-    </div>
+<div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product_page' product.id  %}">View Product</a></div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            No products found for your search.
+        </div>
     {% endif %}
-</center>
-{% endblock %}
+</div>
 
-
-
-
-
+{% endblock content %}
