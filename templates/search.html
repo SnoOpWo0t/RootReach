@@ -1,30 +1,48 @@
 {% extends 'base.html' %}
 {% block content %}
-            <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Search Products</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">Find What You are looking for ....</p>
-               
-                </div>
-            </div>
-        </header>
+<!-- Header -->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Search Products</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Find what you are looking for...</p>
+        </div>
+    </div>
+</header>
+
 <center>
- <div class="card">
-  <div class="card-header">
-    Featured
-  </div>
-  <div class="card-body">
-   <form method="POST" action="{% url 'search' %}">
-       {% csrf_token %}
-       <div class="mb-3">
-  
-  <input type="text" class="form-control" placeholder="search for products" name="Searched">
-</div>
-<button type="submit" class="btn btn secondary">Search Product</button>
-   </form>
-  </div>
-</div>
-    </center>
+    <div class="card my-5">
+        <div class="card-header">
+            Featured
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{% url 'search' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Search for products" 
+                        name="searched" 
+                        required
+                    />
+                </div>
+                <button type="submit" class="btn btn-secondary">Search Product</button>
+            </form>
+        </div>
+    </div>
+
+    <br /><br />
+
+    {% if searched %}
+    <div class="alert alert-success" role="alert">
+        You searched for: <strong>{{ searched }}</strong>
+    </div>
+    {% endif %}
+</center>
 {% endblock %}
+
+
+
+
+{#__________-----#}
