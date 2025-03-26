@@ -1,6 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from unicodedata import category
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .forms import UpdateUserForm, ProfileUpdateForm
 
 from products.models import Product,Category
 from django.contrib.auth import authenticate, login, logout
@@ -9,7 +13,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm,UpdateUserForm
 from django import forms
-
+from products.models import Profile
+from products.models import category # balpaknami
 from django.shortcuts import render
 
 def search(request):
@@ -90,8 +95,8 @@ def update_user(request):
             login(request, current_user)
             messages.success(request, 'Your account has been updated.')
             return redirect('home')
-        return render(request, 'update_user.html', {'form': user_form})
-    return render(request, 'update_user.html', {})
+        return render(request, 'update_profile.html', {'form': user_form})
+    return render(request, 'update_profile.html', {})
 
 
 def category_summary(request):
@@ -104,14 +109,116 @@ def product_page(request,pk):
     product = Product.objects.get(id= pk)
     return render(request, 'product.html',{'product':product})
 
-def category_page(request,foo):
-    foo = foo.replace('_', ' ') # it replaces hypen
+def category(request,foo):
+    foo = foo.replace('-', ' ') # it replaces hypen
     try :
-        category = Category.objects.get(name=foo)
+        # category = Category.objects.get(name=foo)
+        category = Category.objects.get(name__iexact=foo)
+
         products = Product.objects.filter(category=category)
         return render(request,'category.html',{'products':products,'category':category})
     except:
         messages.error(request, 'category does not exist')
         return redirect('home')
 
+#update proile
+@login_required
+def update_profile(request):
+    user = request.user
+    profile, created = Profile.objects.get_or_create(user=user)  # Ensure profile exists for user
 
+    if request.method == 'POST':
+        # Bind the forms with POST data, and instance for the user and profile
+        user_form = UpdateUserForm(request.POST, instance=user)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+
+        # Check if both forms are valid
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()  # Save user data
+            profile_form.save()  # Save profile data
+            messages.success(request, 'Your profile has been updated successfully!')
+            return redirect('update_profile')  # Redirect to the same page to see the changes
+
+    else:
+        # If GET request, pass the instance of the user and profile to the forms
+        user_form = UpdateUserForm(instance=user)
+        profile_form = ProfileUpdateForm(instance=profile)
+
+    # Render the form in the template
+    return render(request, 'update_profile.html', {'user_form': user_form, 'profile_form': profile_form})
+
+
+#vew for seller
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from products.models import Product, Seller
+from .forms import ProductForm  # Assume you have a ProductForm
+
+# Seller homepage
+@login_required
+def seller_area(request):
+    if not hasattr(request.user, 'seller'):  # Check if the user is a seller
+        return redirect('home')  # If not, redirect to home page
+
+    seller = request.user.seller
+    products = Product.objects.filter(seller=seller)
+
+    return render(request, 'seller_area.html', {'products': products})
+
+# Product upload
+@login_required
+def upload_product(request, product_id=None):
+    if not hasattr(request.user, 'seller'):
+        return redirect('home')  # Only sellers can upload products
+
+    # Editing product if product_id is provided
+    if product_id:
+        try:
+            product = Product.objects.get(id=product_id, seller=request.user.seller)
+        except Product.DoesNotExist:
+            return redirect('home')  # Redirect if the product is not found
+    else:
+        product = None  # For new product upload
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)  # For editing, pass the product instance
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.seller = request.user.seller  # Set the logged-in seller as the product seller
+            product.save()  # Save the new or edited product
+            return redirect('seller_area')  # Redirect to seller area after success
+    else:
+        form = ProductForm(instance=product)  # Prepopulate the form with the product for editing
+
+    return render(request, 'upload_product.html', {'form': form, 'product': product})
+
+# Delete product
+@login_required
+
+def delete_product(request, product_id):
+    try:
+        product = Product.objects.get(id=product_id, seller=request.user.seller)
+        product.delete()
+        return redirect('seller_area')
+    except Product.DoesNotExist:
+        return redirect('seller_area')  # or some other error page
+
+
+#product edit
+@login_required
+
+def edit_product(request, product_id):
+    try:
+        product = Product.objects.get(id=product_id, seller=request.user.seller)
+    except Product.DoesNotExist:
+        return redirect('seller_area')  # or some other page
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('seller_area')  # Redirect to seller area after edit
+    else:
+        form = ProductForm(instance=product)
+
+    return render(request, 'seller_area.html', {'form': form, 'product': product})

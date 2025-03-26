@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Header -->
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <!-- Profile Picture & Basic Info -->
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                {% if user.profile.profile_picture %}
+                    <img class="rounded-circle mt-5" width="150px" src="{{ user.profile.profile_picture.url }}" alt="Profile Picture">
+                {% else %}
+                    <img class="rounded-circle mt-5" width="150px" src="/media/profile_pics/default.jpg" alt="Default Profile Picture">
+                {% endif %}
+                <span class="font-weight-bold">{{ user.first_name }} {{ user.last_name }}</span>
+                <span class="text-black-50">{{ user.email }}</span>
+            </div>
+        </div>
+
+        <!-- Profile Form -->
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Profile Picture Upload -->
+                    <div class="form-group">
+                        <label for="profile_picture">Profile Picture</label>
+                        <input type="file" name="profile_picture" class="form-control-file" id="profile_picture">
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <label class="labels">First Name</label>
+                            <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Last Name</label>
+                            <input type="text" name="last_name" class="form-control" value="{{ user.last_name }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Email ID</label>
+                            <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Mobile Number</label>
+                            <input type="text" name="phone_number" class="form-control" value="{{ profile.phone_number }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Address Line 1</label>
+                            <input type="text" name="address_line1" class="form-control" value="{{ profile.address_line1 }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Address Line 2</label>
+                            <input type="text" name="address_line2" class="form-control" value="{{ profile.address_line2 }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Postcode</label>
+                            <input type="text" name="postcode" class="form-control" value="{{ profile.postcode }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">State</label>
+                            <input type="text" name="state" class="form-control" value="{{ profile.state }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Country</label>
+                            <input type="text" name="country" class="form-control" value="{{ profile.country }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Education</label>
+                            <input type="text" name="education" class="form-control" value="{{ profile.education }}">
+                        </div>
+                    </div>
+
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

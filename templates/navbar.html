@@ -15,13 +15,42 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a></li>
                       <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'search' %}">Search</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                        {% if user.is_authenticated %}
-                             <li class="nav-item"><a class="nav-link" href="{% url 'update_user' %}">Profile</a></li>
-                             <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-                        {% else %}
-                             <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                              {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'update_profile' %}">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                        
+                        {% if user.seller %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'seller_area' %}">Seller Zone</a></li>
                         {% endif %}
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
+{#   {% if user.is_authenticated %}#}
+{#                          <li class="nav-item"><a class="nav-link" href="{% url 'update_profile' %}">Profile</a></li>#}
+{##}
+{#                             <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>#}
+{#                        {% else %}#}
+{#                             <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>#}
+{#                            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>#}
+{#                            <li class="nav-item"><a class="nav-link" href="{% url 'seller_area' %}">Seller Zone</a></li>#}
+{#        {% if user.is_authenticated %}#}
+{#    <nav>#}
+{#        <ul>#}
+{#            <li><a href="{% url 'home' %}">Home</a></li>#}
+{#            {% if user.seller %}#}
+{#                <li><a href="{% url 'product_home' %}">Manage Products</a></li>#}
+{#                <li><a href="{% url 'upload_product' %}">Upload New Product</a></li>#}
+{#            {% endif %}#}
+{#        </ul>#}
+{#    </nav>#}
+{#{% endif %}#}
+{##}
+{#   #}
+{#   {% endif %}#}
+{#                    #}
+                    
+
 
 
 
@@ -34,7 +63,7 @@
                                 <li><a class="dropdown-item" href="{% url 'category' 'Food' %}">Food</a></li>
                                  <li><a class="dropdown-item" href="{% url 'category' 'Winter-Wear' %}">Winter Wear</a></li>
                             </ul>
-                        </li>
+                        </li> 
                     </ul>
                     <form class="d-flex">
                 <a href="{% url 'cart_summary'  %}">

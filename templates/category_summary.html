@@ -21,6 +21,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ category }}</h5>
                         <a href="{% url 'category_summary' category %}" class="btn btn-primary">Explore {{ category }}</a>
+                        <a href="{% url 'category_summary' category.id %}" class="btn btn-outline-primary">{{ category.name }}</a>
                     </div>
                 </div>
             </div>

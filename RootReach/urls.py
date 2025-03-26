@@ -19,6 +19,7 @@ from django.urls import path,include
 from . import views
 from . import settings
 from django.conf.urls.static import static
+from .views import update_profile
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
@@ -32,8 +33,20 @@ urlpatterns = [
     path('product_page/<int:pk>', views.product_page, name='product_page'),
     path('category/<str:foo>/', views.category, name='category'),
     path('category_summary/',views.category_summary, name='category_summary'),
-    path('cart/',include('cart.urls')),
 
-path('update/', views.update_user, name='update_user'), #update user
-                  path('search/', views.search, name='search'),
+    path('cart/',include('cart.urls')),
+                  # update user
+# path('update/', views.update_user, name='update_user'),
+path('profile/update/', update_profile, name='update_profile'),
+
+path('search/', views.search, name='search'),
+ #seller- zone
+ path('seller-area/', views.seller_area, name='seller_area'),
+    #crud - seller
+ path('upload-product/', views.upload_product, name='upload_product'),
+ path('edit-product/<int:product_id>/', views.edit_product, name='edit_product'),
+ path('upload-product/<int:product_id>/', views.upload_product, name='edit_product'),# For editing product
+
+ path('delete-product/<int:product_id>/', views.delete_product, name='delete_product'),
+
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
